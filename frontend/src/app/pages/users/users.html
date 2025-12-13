@@ -1,0 +1,115 @@
+<div class="users-container">
+  <div class="container">
+    <h2>👥 Manajemen Pengguna</h2>
+
+    <!-- Error Alert -->
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+
+    <!-- Form Section -->
+    <div class="form-section">
+      <h4 *ngIf="!editingId">Tambah Pengguna Baru</h4>
+      <h4 *ngIf="editingId">Edit Pengguna</h4>
+
+      <form (ngSubmit)="onSubmit()" class="form-card">
+        <div class="form-group">
+          <label>Username *</label>
+          <input type="text" class="form-control" [(ngModel)]="user.username" name="username" required placeholder="Username unik">
+        </div>
+
+        <div class="form-group">
+          <label>Email *</label>
+          <input type="email" class="form-control" [(ngModel)]="user.email" name="email" required placeholder="user@example.com">
+        </div>
+
+        <div class="form-group">
+          <label>Password *</label>
+          <input type="password" class="form-control" [(ngModel)]="user.password" name="password" [required]="!editingId" placeholder="Password">
+          <small *ngIf="editingId" class="text-muted">Kosongkan jika tidak ingin mengubah password</small>
+        </div>
+
+        <div class="form-group">
+          <label>Role *</label>
+          <select class="form-control" [(ngModel)]="user.role" name="role" required>
+            <option value="">-- Pilih Role --</option>
+            <option value="admin">Admin</option>
+            <option value="hr">HR</option>
+            <option value="viewer">Viewer</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Status</label>
+          <select class="form-control" [(ngModel)]="user.isActive" name="isActive">
+            <option [value]="true">Aktif</option>
+            <option [value]="false">Nonaktif</option>
+          </select>
+        </div>
+
+        <div class="btn-group">
+          <button type="submit" class="btn btn-success" [disabled]="loading">
+            {{ editingId ? 'Simpan Perubahan' : 'Tambah Pengguna' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="resetForm()" *ngIf="editingId">
+            Batal Edit
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Data Section -->
+    <div>
+      <h4>Data Pengguna ({{ users.length }})</h4>
+
+      <div *ngIf="loading" class="loading">
+        <div class="spinner"></div>
+        Memuat data...
+      </div>
+
+      <div *ngIf="!loading && users.length === 0" class="table-empty">
+        📭 Belum ada data pengguna
+      </div>
+
+      <table *ngIf="!loading && users.length > 0" class="table">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Dibuat</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of users">
+            <td><strong>{{ u.username }}</strong></td>
+            <td>{{ u.email || '-' }}</td>
+            <td>
+              <span class="badge" [ngClass]="{
+                'bg-danger': u.role === 'admin',
+                'bg-info': u.role === 'hr',
+                'bg-secondary': u.role === 'viewer'
+              }">
+                {{ u.role | uppercase }}
+              </span>
+            </td>
+            <td>
+              <span class="badge" [ngClass]="{ 'bg-success': u.isActive, 'bg-secondary': !u.isActive }">
+                {{ u.isActive ? 'Aktif' : 'Nonaktif' }}
+              </span>
+            </td>
+            <td>{{ u.createdAt | date: 'dd/MM/yyyy' }}</td>
+            <td>
+              <div class="table-actions">
+                <button class="btn btn-info btn-sm" (click)="editUser(u)">Edit</button>
+                <button class="btn btn-danger btn-sm" (click)="deleteUser(u._id)">Hapus</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,118 @@
+<div class="leaves-container">
+  <div class="container">
+    <h2>🏖️ Manajemen Cuti</h2>
+
+    <!-- Error Alert -->
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+
+    <!-- Form Section -->
+    <div class="form-section">
+      <h4 *ngIf="!editingId">Ajukan Cuti Baru</h4>
+      <h4 *ngIf="editingId">Edit Pengajuan Cuti</h4>
+
+      <form (ngSubmit)="onSubmit()" class="form-card">
+        <div class="form-group">
+          <label>Karyawan *</label>
+          <select class="form-control" [(ngModel)]="leave.employee" name="employee" required>
+            <option value="">-- Pilih Karyawan --</option>
+            <option *ngFor="let emp of employees" value="{{ emp._id }}">
+              {{ emp.name }} ({{ emp.nip }})
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Jenis Cuti *</label>
+          <select class="form-control" [(ngModel)]="leave.leaveType" name="leaveType" required>
+            <option value="">-- Pilih Jenis Cuti --</option>
+            <option value="sick">Sakit</option>
+            <option value="personal">Pribadi</option>
+            <option value="vacation">Liburan</option>
+            <option value="maternity">Melahirkan</option>
+            <option value="other">Lainnya</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Tanggal Mulai *</label>
+          <input type="date" class="form-control" [(ngModel)]="leave.startDate" name="startDate" required>
+        </div>
+
+        <div class="form-group">
+          <label>Tanggal Selesai *</label>
+          <input type="date" class="form-control" [(ngModel)]="leave.endDate" name="endDate" required>
+        </div>
+
+        <div class="form-group">
+          <label>Alasan</label>
+          <textarea class="form-control" [(ngModel)]="leave.reason" name="reason" rows="3" placeholder="Alasan pengajuan cuti..."></textarea>
+        </div>
+
+        <div class="btn-group">
+          <button type="submit" class="btn btn-success" [disabled]="loading">
+            {{ editingId ? 'Simpan Perubahan' : 'Ajukan Cuti' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="resetForm()" *ngIf="editingId">
+            Batal Edit
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Data Section -->
+    <div>
+      <h4>Data Cuti ({{ leaves.length }})</h4>
+
+      <div *ngIf="loading" class="loading">
+        <div class="spinner"></div>
+        Memuat data...
+      </div>
+
+      <div *ngIf="!loading && leaves.length === 0" class="table-empty">
+        📭 Belum ada data cuti
+      </div>
+
+      <table *ngIf="!loading && leaves.length > 0" class="table">
+        <thead>
+          <tr>
+            <th>Karyawan</th>
+            <th>Jenis Cuti</th>
+            <th>Tanggal Mulai</th>
+            <th>Tanggal Selesai</th>
+            <th>Durasi</th>
+            <th>Status</th>
+            <th>Alasan</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let lv of leaves">
+            <td>{{ lv.employee?.name || 'N/A' }}</td>
+            <td>{{ lv.leaveType }}</td>
+            <td>{{ lv.startDate | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ lv.endDate | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ lv.durationDays }} hari</td>
+            <td>
+              <span class="badge" [ngClass]="{
+                'bg-info': lv.status === 'pending',
+                'bg-success': lv.status === 'approved',
+                'bg-danger': lv.status === 'rejected'
+              }">
+                {{ lv.status }}
+              </span>
+            </td>
+            <td>{{ lv.reason || '-' }}</td>
+            <td>
+              <div class="table-actions">
+                <button class="btn btn-info btn-sm" (click)="editLeave(lv)">Edit</button>
+                <button class="btn btn-danger btn-sm" (click)="deleteLeave(lv._id)">Hapus</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

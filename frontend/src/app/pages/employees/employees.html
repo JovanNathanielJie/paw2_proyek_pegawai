@@ -1,0 +1,103 @@
+<div class="employees-container">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Data Pegawai</h2>
+    <div class="text-muted">Total: {{ employees.length }}</div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <button (click)="showForm()" class="btn btn-primary mb-3">+ Tambah Pegawai</button>
+
+  <div *ngIf="formVisible" class="form-card">
+    <h3>{{ editingId ? 'Edit' : 'Tambah' }} Pegawai</h3>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>NIP</label>
+        <input [(ngModel)]="employee.nip" name="nip" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label>Nama</label>
+        <input [(ngModel)]="employee.name" name="name" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <input [(ngModel)]="employee.email" name="email" class="form-control" />
+      </div>
+
+      <div class="form-group">
+        <label>Gender</label>
+        <select [(ngModel)]="employee.gender" name="gender" class="form-control">
+          <option value="M">Laki-laki</option>
+          <option value="F">Perempuan</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Status</label>
+        <select [(ngModel)]="employee.status" name="status" class="form-control">
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+          <option value="resigned">Resigned</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Departemen</label>
+        <select class="form-control" [(ngModel)]="employee.department" name="department">
+          <option value="">-- Pilih Departemen --</option>
+          <option *ngFor="let d of departments" [value]="d._id">{{ d.name }}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Posisi</label>
+        <select class="form-control" [(ngModel)]="employee.position" name="position">
+          <option value="">-- Pilih Posisi --</option>
+          <option *ngFor="let p of positions" [value]="p._id">{{ p.title }}</option>
+        </select>
+      </div>
+
+      <div class="btn-group">
+        <button type="submit" class="btn btn-success">Simpan</button>
+        <button type="button" class="btn btn-secondary" (click)="cancel()">Batal</button>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="loading" class="loading">Loading...</div>
+
+  <table *ngIf="!loading && employees.length > 0" class="table">
+    <thead>
+      <tr>
+        <th>NIP</th>
+        <th>Nama</th>
+        <th>Email</th>
+        <th>Gender</th>
+        <th>Status</th>
+        <th>Departemen</th>
+        <th>Posisi</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let emp of employees">
+        <td>{{ emp.nip }}</td>
+        <td>{{ emp.name }}</td>
+        <td>{{ emp.email || '-' }}</td>
+        <td>{{ emp.gender }}</td>
+        <td>{{ emp.status }}</td>
+        <td>{{ emp.department?.name || '-' }}</td>
+        <td>{{ emp.position?.name || '-' }}</td>
+        <td>
+          <button (click)="editEmployee(emp)" class="btn btn-sm btn-info">Edit</button>
+          <button (click)="deleteEmployee(emp._id)" class="btn btn-sm btn-danger">Hapus</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="!loading && employees.length === 0" class="table-empty">Tidak ada data pegawai</p>
+</div>

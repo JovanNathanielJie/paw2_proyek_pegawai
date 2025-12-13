@@ -1,0 +1,110 @@
+<div class="positions-container">
+  <div class="container">
+    <h2>📌 Manajemen Posisi</h2>
+
+    <!-- Error Alert -->
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+
+    <!-- Form Section -->
+    <div class="form-section">
+      <h4 *ngIf="!editingId">Tambah Posisi Baru</h4>
+      <h4 *ngIf="editingId">Edit Posisi</h4>
+
+      <form (ngSubmit)="onSubmit()" class="form-card">
+        <div class="form-group">
+          <label>Nama Posisi *</label>
+          <input type="text" class="form-control" [(ngModel)]="position.title" name="title" required placeholder="Contoh: Senior Developer, Manager">
+        </div>
+
+        <div class="form-group">
+          <label>Deskripsi</label>
+          <textarea class="form-control" [(ngModel)]="position.description" name="description" rows="3" placeholder="Deskripsi posisi..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Gaji Dasar</label>
+          <input type="number" class="form-control" [(ngModel)]="position.baseSalary" name="baseSalary" placeholder="0">
+        </div>
+
+        <div class="form-group">
+          <label>Departemen *</label>
+          <select class="form-control" [(ngModel)]="position.department" name="department" required>
+            <option value="">-- Pilih Departemen --</option>
+            <option *ngFor="let dept of departments" value="{{ dept._id }}">
+              {{ dept.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Level</label>
+          <select class="form-control" [(ngModel)]="position.level" name="level">
+            <option value="staff">Staff</option>
+            <option value="senior">Senior</option>
+            <option value="supervisor">Supervisor</option>
+            <option value="manager">Manager</option>
+            <option value="head">Head</option>
+            <option value="director">Director</option>
+          </select>
+        </div>
+
+        <div class="btn-group">
+          <button type="submit" class="btn btn-success" [disabled]="loading">
+            {{ editingId ? 'Simpan Perubahan' : 'Tambah Posisi' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="resetForm()" *ngIf="editingId">
+            Batal Edit
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Data Section -->
+    <div>
+      <h4>Data Posisi ({{ positions.length }})</h4>
+
+      <div *ngIf="loading" class="loading">
+        <div class="spinner"></div>
+        Memuat data...
+      </div>
+
+      <div *ngIf="!loading && positions.length === 0" class="table-empty">
+        📭 Belum ada data posisi
+      </div>
+
+      <table *ngIf="!loading && positions.length > 0" class="table">
+        <thead>
+          <tr>
+            <th>Nama Posisi</th>
+            <th>Level</th>
+            <th>Departemen</th>
+            <th>Gaji Dasar</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pos of positions">
+            <td><strong>{{ pos.title }}</strong></td>
+            <td>{{ pos.level }}</td>
+            <td>{{ pos.department?.name || 'N/A' }}</td>
+            <td>Rp {{ (pos.baseSalary || 0) | number }}</td>
+            <td>
+              <span class="badge" [ngClass]="{ 'bg-success': pos.isActive, 'bg-secondary': !pos.isActive }">
+                {{ pos.isActive ? 'Aktif' : 'Nonaktif' }}
+              </span>
+            </td>
+            <td>
+              <div class="table-actions">
+                <button class="btn btn-info btn-sm" (click)="editPosition(pos)">Edit</button>
+                <button class="btn btn-danger btn-sm" (click)="deletePosition(pos._id)">Hapus</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

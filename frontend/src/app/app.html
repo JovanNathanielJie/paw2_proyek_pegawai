@@ -1,0 +1,50 @@
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
+<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
+<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * Delete the template below * * * * * * * * * -->
+<!-- * * * * * * * to get started with your project! * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+
+<nav *ngIf="isLoggedIn" class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/dashboard">
+      <span class="badge bg-primary text-white me-2" style="font-size:0.8rem;padding:.35rem .6rem;border-radius:.5rem;">KP</span>
+      <span>Kepegawaian</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact:true }">Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/dashboard/employees" routerLinkActive="active">Pegawai</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/dashboard/departments" routerLinkActive="active">Departemen</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/dashboard/positions" routerLinkActive="active">Posisi</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/dashboard/leaves" routerLinkActive="active">Cuti</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/dashboard/attendance" routerLinkActive="active">Absensi</a></li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-2">
+        <span class="text-muted me-2" *ngIf="user">{{ user?.name || user?.username || user?.role }}</span>
+        <button class="btn btn-outline-danger btn-sm" (click)="logout()">Logout</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main class="main container">
+  <router-outlet></router-outlet>
+</main>
+
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->
+<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+
+<router-outlet />

@@ -1,0 +1,14 @@
+<div *ngIf="isLoggedIn" class="navbar">
+  <div class="navbar-brand">Kepegawaian - {{ user?.role || 'User' }}</div>
+  <nav class="navbar-nav">
+    <a routerLink="/dashboard/employees" routerLinkActive="active">Pegawai</a>
+    <a routerLink="/dashboard/attendance" routerLinkActive="active">Absensi</a>
+    <a routerLink="/dashboard/departments" routerLinkActive="active">Departemen</a>
+    <a routerLink="/dashboard/positions" routerLinkActive="active">Posisi</a>
+    <a routerLink="/dashboard/leaves" routerLinkActive="active">Cuti</a>
+    <a *ngIf="user?.role === 'admin'" routerLink="/dashboard/users" routerLinkActive="active">Users</a>
+    <button (click)="logout()" class="btn-logout">Logout</button>
+  </nav>
+</div>
+
+<router-outlet></router-outlet>

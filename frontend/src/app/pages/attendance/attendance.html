@@ -1,0 +1,121 @@
+<div class="attendance-container">
+  <div class="container">
+    <h2>📋 Manajemen Absensi</h2>
+
+    <!-- Error Alert -->
+    <div *ngIf="error" class="alert alert-danger">
+      {{ error }}
+    </div>
+
+    <!-- Form Section -->
+    <div class="form-section">
+      <h4 *ngIf="!editingId">Tambah Absensi Baru</h4>
+      <h4 *ngIf="editingId">Edit Absensi</h4>
+
+      <form (ngSubmit)="onSubmit()" class="form-card">
+        <div class="form-group">
+          <label>Karyawan *</label>
+          <select class="form-control" [(ngModel)]="attendance.employee" name="employee" required>
+            <option value="">-- Pilih Karyawan --</option>
+            <option *ngFor="let emp of employees" value="{{ emp._id }}">
+              {{ emp.name }} ({{ emp.nip }})
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Tanggal *</label>
+          <input type="date" class="form-control" [(ngModel)]="attendance.date" name="date" required>
+        </div>
+
+        <div class="form-group">
+          <label>Jam Masuk</label>
+          <input type="time" class="form-control" [(ngModel)]="attendance.checkIn" name="checkIn">
+        </div>
+
+        <div class="form-group">
+          <label>Jam Keluar</label>
+          <input type="time" class="form-control" [(ngModel)]="attendance.checkOut" name="checkOut">
+        </div>
+
+        <div class="form-group">
+          <label>Status *</label>
+          <select class="form-control" [(ngModel)]="attendance.status" name="status" required>
+            <option value="present">Hadir</option>
+            <option value="absent">Tidak Hadir</option>
+            <option value="late">Terlambat</option>
+            <option value="sick">Sakit</option>
+            <option value="leave">Cuti</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Catatan</label>
+          <textarea class="form-control" [(ngModel)]="attendance.notes" name="notes" rows="3" placeholder="Catatan absensi..."></textarea>
+        </div>
+
+        <div class="btn-group">
+          <button type="submit" class="btn btn-success" [disabled]="loading">
+            {{ editingId ? 'Simpan Perubahan' : 'Tambah Absensi' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="resetForm()" *ngIf="editingId">
+            Batal Edit
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Data Section -->
+    <div>
+      <h4>Data Absensi ({{ attendances.length }})</h4>
+
+      <div *ngIf="loading" class="loading">
+        <div class="spinner"></div>
+        Memuat data...
+      </div>
+
+      <div *ngIf="!loading && attendances.length === 0" class="table-empty">
+        📭 Belum ada data absensi
+      </div>
+
+      <table *ngIf="!loading && attendances.length > 0" class="table">
+        <thead>
+          <tr>
+            <th>Karyawan</th>
+            <th>Tanggal</th>
+            <th>Jam Masuk</th>
+            <th>Jam Keluar</th>
+            <th>Status</th>
+            <th>Catatan</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let att of attendances">
+            <td>{{ att.employee?.name || 'N/A' }}</td>
+            <td>{{ att.date | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ att.checkIn || '-' }}</td>
+            <td>{{ att.checkOut || '-' }}</td>
+            <td>
+              <span class="badge" [ngClass]="{
+                'bg-success': att.status === 'present',
+                'bg-danger': att.status === 'absent',
+                'bg-warning': att.status === 'late',
+                'bg-info': att.status === 'sick' || att.status === 'leave'
+              }">
+                {{ att.status }}
+              </span>
+            </td>
+            <td>{{ att.notes || '-' }}</td>
+            <td>
+              <div class="table-actions">
+                <button class="btn btn-info btn-sm" (click)="editAttendance(att)">Edit</button>
+                <button class="btn btn-danger btn-sm" (click)="deleteAttendance(att._id)">Hapus</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

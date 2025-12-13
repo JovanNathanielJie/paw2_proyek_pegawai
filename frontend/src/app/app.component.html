@@ -1,0 +1,101 @@
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary px-3">
+  <a class="navbar-brand fw-bold" href="#">HR Management System</a>
+
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item">
+        <a class="nav-link text-white" href="#">Dashboard</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="#">Notifications</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white fw-bold" href="#">Admin</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Layout Wrapper -->
+<div class="d-flex">
+
+  <!-- Sidebar -->
+  <div class="bg-dark text-white p-3 vh-100" style="width: 250px;">
+    <h5 class="text-center mb-4">Menu</h5>
+
+    <ul class="nav flex-column">
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white" href="#">🏠 Dashboard</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white" href="#">👤 Employees</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white" href="#">📁 Departments</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white" href="#">💼 Positions</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white" href="#">📝 Leaves</a>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="nav-link text-white" href="#">🧑‍💼 Users</a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="p-4 flex-grow-1 bg-light">
+    <h2 class="fw-bold mb-4">Welcome to HR Management</h2>
+
+    <div class="row">
+
+      <!-- Card 1 -->
+      <div class="col-md-4 mb-3">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">Employees</h5>
+            <p class="card-text">Manage employee data, positions, and profiles.</p>
+            <a href="#" class="btn btn-primary">View Employees</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="col-md-4 mb-3">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">Departments</h5>
+            <p class="card-text">Organize departments and assign roles.</p>
+            <a href="#" class="btn btn-primary">View Departments</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="col-md-4 mb-3">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">Leave Requests</h5>
+            <p class="card-text">Approve or reject employee leave submissions.</p>
+            <a href="#" class="btn btn-primary">View Leaves</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Router Outlet (Page Content) -->
+    <div class="mt-4">
+      <router-outlet></router-outlet>
+    </div>
+
+  </div>
+
+</div>

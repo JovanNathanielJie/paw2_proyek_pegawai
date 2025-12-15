@@ -1,16 +1,15 @@
-// routes/auth.js
 const router = require("express").Router();
 const authController = require("../controllers/auth.controller");
 const auth = require("../middlewares/auth");
 const role = require("../middlewares/role");
 
-// Register user baru (hanya admin)
-router.post("/register", auth, role("admin"), authController.register);
+// 🔓 REGISTER TANPA AUTH (UNTUK SETUP AWAL)
+router.post("/register", authController.register);
 
-// Login (tanpa auth)
+// 🔓 LOGIN TANPA AUTH
 router.post("/login", authController.login);
 
-// Cek token valid
+// 🔐 CEK TOKEN
 router.get("/me", auth, (req, res) => {
     res.json({ user: req.user });
 });

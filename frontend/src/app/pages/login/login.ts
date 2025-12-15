@@ -17,25 +17,39 @@ export class LoginComponent {
   loading = false;
   error = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
-  login() {
+  login(): void {
+    // reset error
+    this.error = '';
+
+    // validasi sederhana
     if (!this.username || !this.password) {
       this.error = 'Username dan password wajib diisi';
       return;
     }
 
     this.loading = true;
-    this.error = '';
 
-    this.authService.login({ username: this.username, password: this.password }).subscribe({
+    this.authService.login({
+      username: this.username,
+      password: this.password
+    }).subscribe({
       next: (res) => {
+        // AuthService sudah menyimpan token & user
         this.loading = false;
+
+        // redirect ke dashboard
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
         this.loading = false;
-        this.error = err.error?.message || 'Login gagal';
+
+        // tampilkan pesan error dari backend jika ada
+        this.error = err?.error?.message || 'Login gagal. Periksa username dan password.';
       }
     });
   }

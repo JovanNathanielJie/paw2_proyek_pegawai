@@ -10,14 +10,16 @@ import { UsersComponent } from './pages/users/users';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+
   { path: 'login', component: LoginComponent },
+
   {
     path: 'dashboard',
     component: DashboardComponent,
     canActivate: [authGuard],
     children: [
-      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: '', redirectTo: 'employees', pathMatch: 'full' },
       { path: 'employees', component: EmployeesComponent },
       { path: 'attendance', component: AttendanceComponent },
       { path: 'departments', component: DepartmentsComponent },
@@ -26,5 +28,6 @@ export const routes: Routes = [
       { path: 'users', component: UsersComponent }
     ]
   },
+
   { path: '**', redirectTo: '/login' }
 ];

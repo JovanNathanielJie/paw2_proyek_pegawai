@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit {
   recentEmployees: any[] = [];
   loadingRecent = false;
 
-  private apiUrl = 'http://localhost:5000/api/dashboard';
+  private apiUrl = 'http://127.0.0.1:5000/api/dashboard';
 
   constructor(private http: HttpClient, private employeesService: EmployeesService) {}
 

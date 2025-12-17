@@ -27,7 +27,7 @@ export interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:5000/api/auth';
+  private apiUrl = 'http://127.0.0.1:5000/api/auth';
   private tokenKey = 'auth_token';
   private userKey = 'auth_user';
 

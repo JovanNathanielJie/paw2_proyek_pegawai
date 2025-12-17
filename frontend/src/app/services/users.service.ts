@@ -16,12 +16,12 @@ export interface UserResponse {
   providedIn: 'root'
 })
 export class UsersService {
-  private apiUrl = 'http://localhost:5000/api/users';
+  private apiUrl = 'http://127.0.0.1:5000/api/users';
 
   constructor(private http: HttpClient) {}
 
   login(data: UserLogin): Observable<any> {
-    return this.http.post<any>('http://localhost:5000/api/auth/login', data);
+    return this.http.post<any>('http://127.0.0.1:5000/api/auth/login', data);
   }
 
   getUsers(): Observable<any> {

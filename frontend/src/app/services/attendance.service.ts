@@ -16,7 +16,7 @@ export interface Attendance {
   providedIn: 'root'
 })
 export class AttendanceService {
-  private apiUrl = 'http://localhost:5000/api/attendance';
+  private apiUrl = 'http://127.0.0.1:5000/api/attendance';
 
   constructor(private http: HttpClient) {}
 

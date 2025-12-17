@@ -20,7 +20,7 @@ export interface Employee {
   providedIn: 'root'
 })
 export class EmployeesService {
-  private apiUrl = 'http://localhost:5000/api/employees';
+  private apiUrl = 'http://127.0.0.1:5000/api/employees';
 
   constructor(private http: HttpClient) {}
 

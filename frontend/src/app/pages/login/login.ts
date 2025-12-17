@@ -1,13 +1,16 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule    // ✅ WAJIB DI SINI
+  ],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
@@ -47,9 +50,8 @@ export class LoginComponent {
       },
       error: (err) => {
         this.loading = false;
-
-        // tampilkan pesan error dari backend jika ada
-        this.error = err?.error?.message || 'Login gagal. Periksa username dan password.';
+        console.log('Login error:', err); // Debug log
+        this.error = err?.error?.message || err?.message || 'Login gagal. Periksa username dan password.';
       }
     });
   }

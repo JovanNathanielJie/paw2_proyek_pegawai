@@ -14,7 +14,7 @@ export interface Position {
   providedIn: 'root'
 })
 export class PositionsService {
-  private apiUrl = 'http://127.0.0.1:5000/api/positions';
+  private apiUrl = 'http://localhost:5000/api/positions';
 
   constructor(private http: HttpClient) {}
 

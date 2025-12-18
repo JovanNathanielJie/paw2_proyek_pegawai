@@ -6,4 +6,4 @@ const DashboardController = require("../controllers/dashboard.controller");
 // GET /api/dashboard
 router.get("/", DashboardController.getStats);
 
-module.exports = router;
+module.exports = router; w

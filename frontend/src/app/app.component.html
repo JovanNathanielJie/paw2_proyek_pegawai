@@ -1,6 +1,6 @@
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary px-3">
-  <a class="navbar-brand fw-bold" href="#">HR Management System</a>
+  <a class="navbar-brand fw-bold" routerLink="/dashboard">HR Management System</a>
 
   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
     <span class="navbar-toggler-icon"></span>
@@ -9,7 +9,7 @@
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ms-auto">
       <li class="nav-item">
-        <a class="nav-link text-white" href="#">Dashboard</a>
+        <a class="nav-link text-white" routerLink="/dashboard">Dashboard</a>
       </li>
       <li class="nav-item">
         <a class="nav-link text-white" href="#">Notifications</a>
@@ -30,22 +30,22 @@
 
     <ul class="nav flex-column">
       <li class="nav-item mb-2">
-        <a class="nav-link text-white" href="#">🏠 Dashboard</a>
+        <a class="nav-link text-white" routerLink="/dashboard">🏠 Dashboard</a>
       </li>
       <li class="nav-item mb-2">
-        <a class="nav-link text-white" href="#">👤 Employees</a>
+        <a class="nav-link text-white" routerLink="/dashboard/employees">👤 Employees</a>
       </li>
       <li class="nav-item mb-2">
-        <a class="nav-link text-white" href="#">📁 Departments</a>
+        <a class="nav-link text-white" routerLink="/dashboard/departments">📁 Departments</a>
       </li>
       <li class="nav-item mb-2">
-        <a class="nav-link text-white" href="#">💼 Positions</a>
+        <a class="nav-link text-white" routerLink="/dashboard/positions">💼 Positions</a>
       </li>
       <li class="nav-item mb-2">
-        <a class="nav-link text-white" href="#">📝 Leaves</a>
+        <a class="nav-link text-white" routerLink="/dashboard/leaves">📝 Leaves</a>
       </li>
       <li class="nav-item mb-2">
-        <a class="nav-link text-white" href="#">🧑‍💼 Users</a>
+        <a class="nav-link text-white" routerLink="/dashboard/users">🧑‍💼 Users</a>
       </li>
     </ul>
   </div>
@@ -62,7 +62,7 @@
           <div class="card-body">
             <h5 class="card-title">Employees</h5>
             <p class="card-text">Manage employee data, positions, and profiles.</p>
-            <a href="#" class="btn btn-primary">View Employees</a>
+            <a routerLink="/dashboard/employees" class="btn btn-primary">View Employees</a>
           </div>
         </div>
       </div>
@@ -73,7 +73,7 @@
           <div class="card-body">
             <h5 class="card-title">Departments</h5>
             <p class="card-text">Organize departments and assign roles.</p>
-            <a href="#" class="btn btn-primary">View Departments</a>
+            <a routerLink="/dashboard/departments" class="btn btn-primary">View Departments</a>
           </div>
         </div>
       </div>
@@ -84,7 +84,18 @@
           <div class="card-body">
             <h5 class="card-title">Leave Requests</h5>
             <p class="card-text">Approve or reject employee leave submissions.</p>
-            <a href="#" class="btn btn-primary">View Leaves</a>
+            <a routerLink="/dashboard/leaves" class="btn btn-primary">View Leaves</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="col-md-4 mb-3">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="card-title">Positions</h5>
+            <p class="card-text">Manage job positions and titles.</p>
+            <a routerLink="/dashboard/positions" class="btn btn-primary">View Positions</a>
           </div>
         </div>
       </div>

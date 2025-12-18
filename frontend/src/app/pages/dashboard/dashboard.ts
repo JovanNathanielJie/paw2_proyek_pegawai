@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { EmployeesService } from '../../services/employees.service';
+import { AuthService } from '../../services/auth.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   standalone: true,
   selector: 'app-dashboard',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, RouterLinkActive, RouterOutlet],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
 })
@@ -27,14 +29,32 @@ export class DashboardComponent implements OnInit {
   error = '';
   recentEmployees: any[] = [];
   loadingRecent = false;
+  showDashboardHome = true;
 
-  private apiUrl = 'http://localhost:5000/api/auth/dasboard';
+  private apiUrl = 'http://localhost:5000/api/dashboard';
 
-  constructor(private http: HttpClient, private employeesService: EmployeesService) {}
+  constructor(
+    private http: HttpClient, 
+    private employeesService: EmployeesService,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    // Detect route changes to show/hide dashboard home content
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      this.showDashboardHome = event.url === '/dashboard' || event.url === '/dashboard/employees';
+    });
+  }
 
   ngOnInit() {
     this.loadDashboardStats();
     this.loadRecentEmployees();
+  }
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 
   loadDashboardStats() {

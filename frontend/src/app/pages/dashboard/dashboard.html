@@ -1,11 +1,16 @@
-<div class="dashboard-container">
-  <div class="container">
-    <h2>📊 Dashboard</h2>
+<div class="dashboard-wrapper">
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="container">
+      
+      <!-- Dashboard Home Content (only show on /dashboard and /dashboard/employees) -->
+      <div *ngIf="showDashboardHome">
+        <h2>📊 Dashboard</h2>
 
-    <!-- Error Alert -->
-    <div *ngIf="error" class="alert alert-danger">
-      {{ error }}
-    </div>
+        <!-- Error Alert -->
+        <div *ngIf="error" class="alert alert-danger">
+          {{ error }}
+        </div>
 
     <!-- Loading State -->
     <div *ngIf="loading" class="loading">
@@ -145,5 +150,13 @@
         <div *ngIf="recentEmployees.length === 0" class="table-empty">Belum ada pegawai terbaru.</div>
       </div>
     </div>
+    </div>
+    <!-- End Dashboard Home Content -->
+    
+    <!-- Child Routes Outlet -->
+    <div class="child-content">
+      <router-outlet></router-outlet>
+    </div>
   </div>
+  </main>
 </div>

@@ -21,7 +21,7 @@ export class UsersService {
   constructor(private http: HttpClient) {}
 
   login(data: UserLogin): Observable<any> {
-    return this.http.post<any>('http://localhost:5000/api/auth/login', data);
+    return this.http.post<any>('http://localhost:5000/api/users', data);
   }
 
   getUsers(): Observable<any> {

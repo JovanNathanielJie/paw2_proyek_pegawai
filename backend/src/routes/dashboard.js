@@ -7,4 +7,4 @@ const auth = require("../middlewares/auth");
 // GET /api/dashboard
 router.get("/", auth, DashboardController.getStats);
 
-module.exports = router; w
+module.exports = router; 

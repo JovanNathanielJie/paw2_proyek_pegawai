@@ -16,18 +16,24 @@ const LeaveSchema = new mongoose.Schema(
     },
 
     startDate: {
-      type: Date,
-      required: true
+      type: String, // Format: DD/MM/YYYY (contoh: 19/12/2025)
+      required: true,
+      validate: {
+        validator: function(v) {
+          return /^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/\d{4}$/.test(v);
+        },
+        message: 'startDate harus dalam format DD/MM/YYYY (contoh: 19/12/2025)'
+      }
     },
 
     endDate: {
-      type: Date,
+      type: String, // Format: DD/MM/YYYY (contoh: 25/12/2025)
       required: true,
       validate: {
-        validator: function (v) {
-          return v >= this.startDate;
+        validator: function(v) {
+          return /^(0?[1-9]|[12][0-9]|3[01])\/(0?[1-9]|1[0-2])\/\d{4}$/.test(v);
         },
-        message: "endDate must be after startDate"
+        message: 'endDate harus dalam format DD/MM/YYYY (contoh: 25/12/2025)'
       }
     },
 
@@ -54,11 +60,28 @@ const LeaveSchema = new mongoose.Schema(
   { timestamps: true } // adds createdAt & updatedAt
 );
 
-// Calculate duration automatically
+// Calculate duration automatically from DD/MM/YYYY strings
 LeaveSchema.pre("save", function (next) {
-  const diff = this.endDate - this.startDate;
-  this.durationDays = Math.ceil(diff / (1000 * 60 * 60 * 24)) + 1;
-  next();
+  try {
+    // Parse DD/MM/YYYY to Date
+    const parseDate = (dateStr) => {
+      const [day, month, year] = dateStr.split('/');
+      return new Date(year, month - 1, day);
+    };
+    
+    const start = parseDate(this.startDate);
+    const end = parseDate(this.endDate);
+    
+    if (end < start) {
+      return next(new Error('Tanggal selesai harus setelah atau sama dengan tanggal mulai'));
+    }
+    
+    const diff = end - start;
+    this.durationDays = Math.ceil(diff / (1000 * 60 * 60 * 24)) + 1;
+    next();
+  } catch (err) {
+    next(new Error('Format tanggal tidak valid. Gunakan DD/MM/YYYY'));
+  }
 });
 
 module.exports = mongoose.model("Leave", LeaveSchema);

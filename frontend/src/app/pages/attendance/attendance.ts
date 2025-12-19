@@ -21,12 +21,21 @@ export class AttendanceComponent implements OnInit {
 
   attendance = {
     employee: '',
-    date: new Date().toISOString().split('T')[0],
+    date: this.getTodayFormatted(),
     checkIn: '',
     checkOut: '',
     status: 'Hadir',
     notes: ''
   };
+
+  // Helper untuk format tanggal YYYY-MM-DD (kompatibel dengan input type="date")
+  private getTodayFormatted(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 
   constructor(private attendanceService: AttendanceService, private employeesService: EmployeesService) {}
 
@@ -61,7 +70,7 @@ export class AttendanceComponent implements OnInit {
   showForm() {
     this.formVisible = true;
     this.editingId = null;
-    this.attendance = { employee: '', date: new Date().toISOString().split('T')[0], checkIn: '', checkOut: '', status: 'Hadir', notes: '' };
+    this.attendance = { employee: '', date: this.getTodayFormatted(), checkIn: '', checkOut: '', status: 'Hadir', notes: '' };
   }
 
   onSubmit() {
@@ -70,25 +79,32 @@ export class AttendanceComponent implements OnInit {
       return;
     }
 
+    console.log('=== SUBMITTING ATTENDANCE ===');
+    console.log('Data:', this.attendance);
+
     if (this.editingId) {
       this.attendanceService.updateAttendance(this.editingId, this.attendance).subscribe({
         next: () => {
+          console.log('Attendance updated successfully');
           this.loadAttendances();
           this.formVisible = false;
           this.error = '';
         },
         error: (err) => {
+          console.error('Error updating attendance:', err);
           this.error = err.error?.message || 'Gagal menyimpan data';
         }
       });
     } else {
       this.attendanceService.addAttendance(this.attendance).subscribe({
-        next: () => {
+        next: (response) => {
+          console.log('Attendance created successfully:', response);
           this.loadAttendances();
           this.formVisible = false;
           this.error = '';
         },
         error: (err) => {
+          console.error('Error creating attendance:', err);
           this.error = err.error?.message || 'Gagal menambah absensi';
         }
       });
@@ -110,13 +126,17 @@ export class AttendanceComponent implements OnInit {
 
   editAttendance(att: any) {
     this.editingId = att._id;
-    this.attendance = { ...att };
+    // Pastikan format date konsisten (YYYY-MM-DD)
+    this.attendance = { 
+      ...att,
+      date: att.date || this.getTodayFormatted()
+    };
     this.formVisible = true;
   }
 
   resetForm() {
     this.editingId = null;
-    this.attendance = { employee: '', date: new Date().toISOString().split('T')[0], checkIn: '', checkOut: '', status: 'Hadir', notes: '' };
+    this.attendance = { employee: '', date: this.getTodayFormatted(), checkIn: '', checkOut: '', status: 'Hadir', notes: '' };
     this.formVisible = false;
   }
 

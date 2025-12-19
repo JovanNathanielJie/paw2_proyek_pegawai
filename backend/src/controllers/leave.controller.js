@@ -3,14 +3,55 @@ const Leave = require("../models/Leave");
 // CREATE leave request
 exports.create = async (req, res) => {
   try {
+    console.log('=== CREATE LEAVE REQUEST ===');
+    console.log('Body:', req.body);
+    console.log('User:', req.user);
+
+    let { employee, leaveType, startDate, endDate } = req.body;
+
+    // Validasi input
+    if (!employee || !leaveType || !startDate || !endDate) {
+      return res.status(400).json({
+        success: false,
+        message: "Employee, leaveType, startDate, dan endDate wajib diisi"
+      });
+    }
+
+    // Konversi dari YYYY-MM-DD ke DD/MM/YYYY jika perlu
+    const convertToDD_MM_YYYY = (dateStr) => {
+      if (dateStr.includes('-') && dateStr.split('-')[0].length === 4) {
+        const [year, month, day] = dateStr.split('-');
+        return `${day}/${month}/${year}`;
+      }
+      return dateStr;
+    };
+
+    startDate = convertToDD_MM_YYYY(startDate);
+    endDate = convertToDD_MM_YYYY(endDate);
+    req.body.startDate = startDate;
+    req.body.endDate = endDate;
+    
+    console.log('Converted dates - Start:', startDate, 'End:', endDate);
+
     const leave = await Leave.create({
       ...req.body,
       employee: req.body.employee
     });
 
-    res.status(201).json({ success: true, message: "Leave request created successfully", data: leave });
+    console.log('Leave created:', leave);
+
+    res.status(201).json({ 
+      success: true, 
+      message: "Pengajuan cuti berhasil dibuat", 
+      data: leave 
+    });
   } catch (err) {
-    res.status(500).json({ success: false, message: "Error creating leave request", error: err.message });
+    console.error('Error creating leave:', err);
+    res.status(500).json({ 
+      success: false, 
+      message: "Error creating leave request", 
+      error: err.message 
+    });
   }
 };
 

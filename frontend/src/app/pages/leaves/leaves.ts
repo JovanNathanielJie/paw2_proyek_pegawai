@@ -29,6 +29,17 @@ export class LeavesComponent implements OnInit {
     approvedBy: ''
   };
 
+  // Helper untuk format tanggal YYYY-MM-DD (kompatibel dengan input type="date")
+  private formatDateForInput(dateValue: any): string {
+    if (!dateValue) return '';
+    const date = new Date(dateValue);
+    if (isNaN(date.getTime())) return '';
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   leaveTypes = ['Sakit', 'Pribadi', 'Liburan', 'Melahirkan', 'Lainnya'];
   statuses = ['pending', 'approved', 'rejected'];
 
@@ -74,25 +85,32 @@ export class LeavesComponent implements OnInit {
       return;
     }
 
+    console.log('=== SUBMITTING LEAVE ===');
+    console.log('Data:', this.leave);
+
     if (this.editingId) {
       this.leavesService.updateLeave(this.editingId, this.leave).subscribe({
         next: () => {
+          console.log('Leave updated successfully');
           this.loadLeaves();
           this.formVisible = false;
           this.error = '';
         },
         error: (err) => {
+          console.error('Error updating leave:', err);
           this.error = err.error?.message || 'Gagal menyimpan data';
         }
       });
     } else {
       this.leavesService.addLeave(this.leave).subscribe({
-        next: () => {
+        next: (response) => {
+          console.log('Leave created successfully:', response);
           this.loadLeaves();
           this.formVisible = false;
           this.error = '';
         },
         error: (err) => {
+          console.error('Error creating leave:', err);
           this.error = err.error?.message || 'Gagal menambah cuti';
         }
       });
@@ -114,7 +132,12 @@ export class LeavesComponent implements OnInit {
 
   editLeave(lv: any) {
     this.editingId = lv._id;
-    this.leave = { ...lv };
+    // Konversi tanggal ke format YYYY-MM-DD untuk input type="date"
+    this.leave = { 
+      ...lv,
+      startDate: this.formatDateForInput(lv.startDate),
+      endDate: this.formatDateForInput(lv.endDate)
+    };
     this.formVisible = true;
   }
 

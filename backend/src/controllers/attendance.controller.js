@@ -2,25 +2,48 @@ const Attendance = require("../models/Attendance");
 
 exports.create = async (req, res) => {
   try {
-    const { employee, date } = req.body;
+    console.log('=== CREATE ATTENDANCE REQUEST ===');
+    console.log('Body:', req.body);
+    console.log('User:', req.user);
+
+    let { employee, date } = req.body;
+
+    // Validasi input
+    if (!employee || !date) {
+      return res.status(400).json({
+        success: false,
+        message: "Employee dan date wajib diisi"
+      });
+    }
+
+    // Konversi dari YYYY-MM-DD ke DD/MM/YYYY jika perlu
+    if (date.includes('-') && date.split('-')[0].length === 4) {
+      const [year, month, day] = date.split('-');
+      date = `${day}/${month}/${year}`;
+      req.body.date = date;
+      console.log('Converted date to DD/MM/YYYY:', date);
+    }
 
     // Cek jika sudah absen hari ini
     const exists = await Attendance.findOne({ employee, date });
     if (exists) {
       return res.status(400).json({
         success: false,
-        message: "Attendance already created for this date"
+        message: "Absensi untuk tanggal ini sudah ada"
       });
     }
 
     const att = await Attendance.create(req.body);
+    console.log('Attendance created:', att);
+    
     res.status(201).json({ 
       success: true,
-      message: "Attendance recorded successfully",
+      message: "Absensi berhasil dicatat",
       data: att 
     });
 
   } catch (err) {
+    console.error('Error creating attendance:', err);
     res.status(500).json({ 
       success: false,
       message: "Error creating attendance",

@@ -8,18 +8,34 @@ const AttendanceSchema = new mongoose.Schema({
   },
 
   date: {
-    type: String, // Format: YYYY-MM-DD
+    type: String, // Format: DD/MM/YYYY
     required: true
   },
 
-  // Store time-of-day as HH:mm string to match UI
-  checkIn: String,
-  checkOut: String,
+  // Store time as HH:MM string (e.g., "07:50", "17:00")
+  checkIn: {
+    type: String,
+    validate: {
+      validator: function(v) {
+        if (!v) return true; // Optional field
+        return /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(v);
+      },
+      message: 'checkIn harus dalam format HH:MM (contoh: 07:50)'
+    }
+  },
+  checkOut: {
+    type: String,
+    validate: {
+      validator: function(v) {
+        if (!v) return true; // Optional field
+        return /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(v);
+      },
+      message: 'checkOut harus dalam format HH:MM (contoh: 17:00)'
+    }
+  },
 
   status: {
     type: String,
-    // Align with UI options
-    // Align with Indonesian UI values
     enum: ["Hadir", "Terlambat", "Tidak Hadir", "Sakit", "Cuti"],
     default: "Hadir"
   },

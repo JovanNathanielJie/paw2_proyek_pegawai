@@ -12,13 +12,16 @@ const AttendanceSchema = new mongoose.Schema({
     required: true
   },
 
-  checkIn: Date,
-  checkOut: Date,
+  // Store time-of-day as HH:mm string to match UI
+  checkIn: String,
+  checkOut: String,
 
   status: {
     type: String,
-    enum: ["present", "late", "absent"],
-    default: "present"
+    // Align with UI options
+    // Align with Indonesian UI values
+    enum: ["Hadir", "Terlambat", "Tidak Hadir", "Sakit", "Cuti"],
+    default: "Hadir"
   },
 
   notes: String

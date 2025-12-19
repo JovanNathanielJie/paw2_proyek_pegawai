@@ -21,7 +21,7 @@ export class LeavesComponent implements OnInit {
 
   leave = {
     employee: '',
-    leaveType: 'sick',
+    leaveType: 'Sakit',
     startDate: '',
     endDate: '',
     reason: '',
@@ -29,7 +29,7 @@ export class LeavesComponent implements OnInit {
     approvedBy: ''
   };
 
-  leaveTypes = ['sick', 'personal', 'vacation', 'maternity', 'other'];
+  leaveTypes = ['Sakit', 'Pribadi', 'Liburan', 'Melahirkan', 'Lainnya'];
   statuses = ['pending', 'approved', 'rejected'];
 
   constructor(private leavesService: LeavesService, private employeesService: EmployeesService) {}
@@ -65,7 +65,7 @@ export class LeavesComponent implements OnInit {
   showForm() {
     this.formVisible = true;
     this.editingId = null;
-    this.leave = { employee: '', leaveType: 'sick', startDate: '', endDate: '', reason: '', status: 'pending', approvedBy: '' };
+    this.leave = { employee: '', leaveType: 'Sakit', startDate: '', endDate: '', reason: '', status: 'pending', approvedBy: '' };
   }
 
   onSubmit() {
@@ -120,7 +120,7 @@ export class LeavesComponent implements OnInit {
 
   resetForm() {
     this.editingId = null;
-    this.leave = { employee: '', leaveType: 'sick', startDate: '', endDate: '', reason: '', status: 'pending', approvedBy: '' };
+    this.leave = { employee: '', leaveType: 'Sakit', startDate: '', endDate: '', reason: '', status: 'pending', approvedBy: '' };
     this.formVisible = false;
   }
 

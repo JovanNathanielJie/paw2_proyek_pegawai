@@ -41,11 +41,11 @@
         <div class="form-group">
           <label>Status *</label>
           <select class="form-control" [(ngModel)]="attendance.status" name="status" required>
-            <option value="present">Hadir</option>
-            <option value="absent">Tidak Hadir</option>
-            <option value="late">Terlambat</option>
-            <option value="sick">Sakit</option>
-            <option value="leave">Cuti</option>
+            <option value="Hadir">Hadir</option>
+            <option value="Tidak Hadir">Tidak Hadir</option>
+            <option value="Terlambat">Terlambat</option>
+            <option value="Sakit">Sakit</option>
+            <option value="Cuti">Cuti</option>
           </select>
         </div>
 
@@ -98,10 +98,10 @@
             <td>{{ att.checkOut || '-' }}</td>
             <td>
               <span class="badge" [ngClass]="{
-                'bg-success': att.status === 'present',
-                'bg-danger': att.status === 'absent',
-                'bg-warning': att.status === 'late',
-                'bg-info': att.status === 'sick' || att.status === 'leave'
+                'bg-success': att.status === 'Hadir',
+                'bg-danger': att.status === 'Tidak Hadir',
+                'bg-warning': att.status === 'Terlambat',
+                'bg-info': att.status === 'Sakit' || att.status === 'Cuti'
               }">
                 {{ att.status }}
               </span>

@@ -119,7 +119,7 @@
     </div>
 
     <!-- Latest Employees -->
-    <div class="mt-4">
+    <div class="mt-4" *ngIf="showDashboardHome">
       <h4>Terbaru: Pegawai</h4>
       <div *ngIf="loadingRecent" class="loading">
         <div class="spinner"></div>

@@ -10,7 +10,8 @@ const LeaveSchema = new mongoose.Schema(
 
     leaveType: {
       type: String,
-      enum: ["sick", "personal", "vacation", "maternity", "other"],
+      // Match Indonesian UI options
+      enum: ["Sakit", "Pribadi", "Liburan", "Melahirkan", "Lainnya"],
       required: true
     },
 

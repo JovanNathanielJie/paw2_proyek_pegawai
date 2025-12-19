@@ -24,7 +24,7 @@ export class AttendanceComponent implements OnInit {
     date: new Date().toISOString().split('T')[0],
     checkIn: '',
     checkOut: '',
-    status: 'present',
+    status: 'Hadir',
     notes: ''
   };
 
@@ -61,7 +61,7 @@ export class AttendanceComponent implements OnInit {
   showForm() {
     this.formVisible = true;
     this.editingId = null;
-    this.attendance = { employee: '', date: new Date().toISOString().split('T')[0], checkIn: '', checkOut: '', status: 'present', notes: '' };
+    this.attendance = { employee: '', date: new Date().toISOString().split('T')[0], checkIn: '', checkOut: '', status: 'Hadir', notes: '' };
   }
 
   onSubmit() {
@@ -116,7 +116,7 @@ export class AttendanceComponent implements OnInit {
 
   resetForm() {
     this.editingId = null;
-    this.attendance = { employee: '', date: new Date().toISOString().split('T')[0], checkIn: '', checkOut: '', status: 'present', notes: '' };
+    this.attendance = { employee: '', date: new Date().toISOString().split('T')[0], checkIn: '', checkOut: '', status: 'Hadir', notes: '' };
     this.formVisible = false;
   }
 

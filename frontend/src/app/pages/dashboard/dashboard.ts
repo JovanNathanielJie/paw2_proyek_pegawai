@@ -30,6 +30,7 @@ export class DashboardComponent implements OnInit {
   recentEmployees: any[] = [];
   loadingRecent = false;
   showDashboardHome = true;
+  currentPage = 'dashboard';
 
   private apiUrl = 'http://localhost:5000/api/dashboard';
 
@@ -43,7 +44,8 @@ export class DashboardComponent implements OnInit {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
-      this.showDashboardHome = event.url === '/dashboard' || event.url === '/dashboard/employees';
+      this.showDashboardHome = event.url === '/dashboard';
+      this.currentPage = event.url.split('/').pop() || 'dashboard';
     });
   }
 

@@ -91,8 +91,8 @@
           <tr *ngFor="let lv of leaves">
             <td>{{ lv.employee?.name || 'N/A' }}</td>
             <td>{{ lv.leaveType }}</td>
-            <td>{{ lv.startDate | date: 'dd/MM/yyyy' }}</td>
-            <td>{{ lv.endDate | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ lv.startDate }}</td>
+            <td>{{ lv.endDate }}</td>
             <td>{{ lv.durationDays }} hari</td>
             <td>
               <span class="badge" [ngClass]="{

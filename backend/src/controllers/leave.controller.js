@@ -84,6 +84,19 @@ exports.getOne = async (req, res) => {
 // UPDATE leave (HR/Admin)
 exports.update = async (req, res) => {
   try {
+    // Convert incoming dates to DD/MM/YYYY if provided in YYYY-MM-DD
+    const convertToDD_MM_YYYY = (dateStr) => {
+      if (!dateStr) return dateStr;
+      if (dateStr.includes('-') && dateStr.split('-')[0].length === 4) {
+        const [year, month, day] = dateStr.split('-');
+        return `${day}/${month}/${year}`;
+      }
+      return dateStr;
+    };
+
+    if (req.body.startDate) req.body.startDate = convertToDD_MM_YYYY(req.body.startDate);
+    if (req.body.endDate) req.body.endDate = convertToDD_MM_YYYY(req.body.endDate);
+
     const leave = await Leave.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json({ success: true, message: "Leave updated successfully", data: leave });
   } catch (err) {

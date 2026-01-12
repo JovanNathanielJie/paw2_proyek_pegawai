@@ -21,7 +21,6 @@ export class PositionsComponent implements OnInit {
 
   position = {
     title: '',
-    description: '',
     baseSalary: 0,
     department: '',
     level: 'staff'
@@ -62,7 +61,7 @@ export class PositionsComponent implements OnInit {
   showForm() {
     this.formVisible = true;
     this.editingId = null;
-    this.position = { title: '', description: '', baseSalary: 0, department: '', level: 'staff' };
+    this.position = { title: '', baseSalary: 0, department: '', level: 'staff' };
   }
 
   onSubmit() {
@@ -117,7 +116,7 @@ export class PositionsComponent implements OnInit {
 
   resetForm() {
     this.editingId = null;
-    this.position = { title: '', description: '', baseSalary: 0, department: '', level: 'staff' };
+    this.position = { title: '', baseSalary: 0, department: '', level: 'staff' };
     this.formVisible = false;
   }
 

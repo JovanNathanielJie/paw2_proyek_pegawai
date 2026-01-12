@@ -82,7 +82,6 @@
             <th>Tanggal Mulai</th>
             <th>Tanggal Selesai</th>
             <th>Durasi</th>
-            <th>Status</th>
             <th>Alasan</th>
             <th>Aksi</th>
           </tr>
@@ -94,15 +93,6 @@
             <td>{{ lv.startDate }}</td>
             <td>{{ lv.endDate }}</td>
             <td>{{ lv.durationDays }} hari</td>
-            <td>
-              <span class="badge" [ngClass]="{
-                'bg-info': lv.status === 'pending',
-                'bg-success': lv.status === 'approved',
-                'bg-danger': lv.status === 'rejected'
-              }">
-                {{ lv.status }}
-              </span>
-            </td>
             <td>{{ lv.reason || '-' }}</td>
             <td>
               <div class="table-actions">

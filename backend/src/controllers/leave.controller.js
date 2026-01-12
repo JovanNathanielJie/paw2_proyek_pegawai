@@ -4,8 +4,7 @@ const Leave = require("../models/Leave");
 exports.create = async (req, res) => {
   try {
     console.log('=== CREATE LEAVE REQUEST ===');
-    console.log('Body:', req.body);
-    console.log('User:', req.user);
+    console.log('Body:', JSON.stringify(req.body, null, 2));
 
     let { employee, leaveType, startDate, endDate } = req.body;
 
@@ -17,28 +16,40 @@ exports.create = async (req, res) => {
       });
     }
 
-    // Konversi dari YYYY-MM-DD ke DD/MM/YYYY jika perlu
+    // Konversi dari YYYY-MM-DD ke DD/MM/YYYY
     const convertToDD_MM_YYYY = (dateStr) => {
+      if (!dateStr) return dateStr;
+      // Cek apakah format YYYY-MM-DD (dari HTML input type="date")
       if (dateStr.includes('-') && dateStr.split('-')[0].length === 4) {
         const [year, month, day] = dateStr.split('-');
-        return `${day}/${month}/${year}`;
+        // Pastikan format DD/MM/YYYY dengan padding 0 jika perlu
+        const dayPadded = day.padStart(2, '0');
+        const monthPadded = month.padStart(2, '0');
+        return `${dayPadded}/${monthPadded}/${year}`;
       }
+      // Jika sudah format DD/MM/YYYY, kembalikan apa adanya
       return dateStr;
     };
 
+    const originalStart = startDate;
+    const originalEnd = endDate;
+    
     startDate = convertToDD_MM_YYYY(startDate);
     endDate = convertToDD_MM_YYYY(endDate);
-    req.body.startDate = startDate;
-    req.body.endDate = endDate;
     
-    console.log('Converted dates - Start:', startDate, 'End:', endDate);
+    console.log(`Date conversion: ${originalStart} => ${startDate}`);
+    console.log(`Date conversion: ${originalEnd} => ${endDate}`);
 
     const leave = await Leave.create({
-      ...req.body,
-      employee: req.body.employee
+      employee,
+      leaveType,
+      startDate,
+      endDate,
+      reason: req.body.reason,
+      status: req.body.status || 'pending'
     });
 
-    console.log('Leave created:', leave);
+    console.log('Leave created successfully:', leave._id);
 
     res.status(201).json({ 
       success: true, 
@@ -46,10 +57,13 @@ exports.create = async (req, res) => {
       data: leave 
     });
   } catch (err) {
-    console.error('Error creating leave:', err);
+    console.error('Error creating leave:', err.message);
+    if (err.errors) {
+      console.error('Validation errors:', JSON.stringify(err.errors, null, 2));
+    }
     res.status(500).json({ 
       success: false, 
-      message: "Error creating leave request", 
+      message: err.message || "Error creating leave request", 
       error: err.message 
     });
   }
@@ -87,9 +101,13 @@ exports.update = async (req, res) => {
     // Convert incoming dates to DD/MM/YYYY if provided in YYYY-MM-DD
     const convertToDD_MM_YYYY = (dateStr) => {
       if (!dateStr) return dateStr;
+      // Cek apakah format YYYY-MM-DD (dari HTML input type="date")
       if (dateStr.includes('-') && dateStr.split('-')[0].length === 4) {
         const [year, month, day] = dateStr.split('-');
-        return `${day}/${month}/${year}`;
+        // Pastikan format DD/MM/YYYY dengan padding 0
+        const dayPadded = day.padStart(2, '0');
+        const monthPadded = month.padStart(2, '0');
+        return `${dayPadded}/${monthPadded}/${year}`;
       }
       return dateStr;
     };

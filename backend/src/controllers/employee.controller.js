@@ -44,7 +44,7 @@ exports.getAll = async (req, res) => {
   try {
     const list = await Employee.find()
       .populate("department", "name")
-      .populate("position", "name");
+      .populate("position", "title");
 
     res.json({
       success: true,
@@ -67,7 +67,7 @@ exports.getOne = async (req, res) => {
   try {
     const emp = await Employee.findById(req.params.id)
       .populate("department", "name")
-      .populate("position", "name");
+      .populate("position", "title");
 
     if (!emp) {
       return res.status(404).json({ success: false, message: "Employee not found" });

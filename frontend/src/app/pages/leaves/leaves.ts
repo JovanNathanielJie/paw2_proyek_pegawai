@@ -32,6 +32,14 @@ export class LeavesComponent implements OnInit {
   // Helper untuk format tanggal YYYY-MM-DD (kompatibel dengan input type="date")
   private formatDateForInput(dateValue: any): string {
     if (!dateValue) return '';
+    
+    // Jika format DD/MM/YYYY dari database, konversi ke YYYY-MM-DD
+    if (typeof dateValue === 'string' && dateValue.includes('/')) {
+      const [day, month, year] = dateValue.split('/');
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    }
+    
+    // Jika sudah Date object atau format lain
     const date = new Date(dateValue);
     if (isNaN(date.getTime())) return '';
     const year = date.getFullYear();
@@ -86,7 +94,9 @@ export class LeavesComponent implements OnInit {
     }
 
     console.log('=== SUBMITTING LEAVE ===');
-    console.log('Data:', this.leave);
+    console.log('Leave data:', JSON.stringify(this.leave, null, 2));
+    console.log('Start date format:', this.leave.startDate);
+    console.log('End date format:', this.leave.endDate);
 
     if (this.editingId) {
       this.leavesService.updateLeave(this.editingId, this.leave).subscribe({
@@ -111,7 +121,8 @@ export class LeavesComponent implements OnInit {
         },
         error: (err) => {
           console.error('Error creating leave:', err);
-          this.error = err.error?.message || 'Gagal menambah cuti';
+          console.error('Error details:', err.error);
+          this.error = err.error?.message || 'Error creating leave request';
         }
       });
     }

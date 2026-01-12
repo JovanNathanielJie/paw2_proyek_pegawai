@@ -90,7 +90,7 @@
         <td>{{ emp.gender }}</td>
         <td>{{ emp.status }}</td>
         <td>{{ emp.department?.name || '-' }}</td>
-        <td>{{ emp.position?.name || '-' }}</td>
+        <td>{{ emp.position?.title || '-' }}</td>
         <td>
           <button (click)="editEmployee(emp)" class="btn btn-sm btn-info">Edit</button>
           <button (click)="deleteEmployee(emp._id)" class="btn btn-sm btn-danger">Hapus</button>
